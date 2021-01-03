@@ -21,6 +21,14 @@ __Preliminary checks__
 * Connect the UTP cable to the network and `ping 192.168.1.2`,
   the shield should respond to the ping.
 
+__Setup MQTT__
+Make sure that the Adafruit-MQTT library is available in the Arduino IDE.
+Sketch > Include Libraries > Manage Libraries
+Type in the filter field, and install Adafruit-MQTT with all the dependencies.
+
+* load the mqtt-client.ino file, change the IP settings, and the MQTT topics
+* use a python client to read the payloads that the client writes.
+
 
 ### Nano V3
 * Nano 3.0 CH340G
