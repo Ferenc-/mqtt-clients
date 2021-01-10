@@ -43,6 +43,7 @@ Type in the filter field, and install Adafruit-MQTT with all the dependencies.
 * Arduino forum link:
 * WizzNet forum: https://forum.wiznet.io/t/topic/1224
 * Alternative library: https://github.com/RoboCore/Ethernet_W5500
+* [Fritzing Data for W5500](https://github.com/boochow/W5500_fritzing_data) thanks to [boochow's  blog post](https://blog.boochow.com/article/454490629.html)
 
 __Specifications:__
 Chip type: W5500
