@@ -20,35 +20,33 @@ IPAddress dnsIP (192, 168, 0, 1);
 //If you uncommented either of the above lines, make sure to change "Ethernet.begin(mac)" to "Ethernet.begin(mac, iotIP)" or "Ethernet.begin(mac, ip, dnsIP)"
 
 
-/************************* Adafruit.io Setup *********************************/
+/************************* MQTT Connection Setup *********************************/
 
-/* #define AIO_SERVER      "io.adafruit.com" */
-#define AIO_SERVER      "test.mosquitto.org"
+#define MQTT_SERVER      "192.168.1.172" /* "test.mosquitto.org" */
 /* Keep in mind that this is the unencrypted port */
-#define AIO_SERVERPORT  1883
-/*
-#define AIO_USERNAME    "...your AIO username (see https://accounts.adafruit.com)..."
-#define AIO_KEY         "...your AIO key..."
-*/
-#define AIO_USERNAME    ""
-#define AIO_KEY         ""
+#define MQTT_SERVERPORT  1883
+
+#define MQTT_USERNAME    "thermometer001"
+#define MQTT_KEY         "thermometer001pw"
 
 
 EthernetClient client;
 
-Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
+Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, MQTT_KEY);
 
 // You don't need to change anything below this line!
 #define halt(s) { Serial.println(F( s )); while(1);  }
 
 /****************************** Feeds ***************************************/
 
-// Setup a feed called 'photocell' for publishing.
-// Notice MQTT paths for AIO follow the form: <username>/feeds/<feedname>
-Adafruit_MQTT_Publish photocell = Adafruit_MQTT_Publish(&mqtt,  AIO_USERNAME "TestingTopicEFERGCZ123"); //"/feeds/photocell");
+// Setup a feed called 'temperature' for publishing.
+// Notice MQTT paths for MQTT follow the form: <username>/feeds/<feedname>
+Adafruit_MQTT_Publish temperature = Adafruit_MQTT_Publish(&mqtt, "home/livingroom/temperature");
+
+Adafruit_MQTT_Publish humidity = Adafruit_MQTT_Publish(&mqtt, "home/livingroom/humidity");
 
 // Setup a feed called 'onoff' for subscribing to changes.
-Adafruit_MQTT_Subscribe onoffbutton = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME "TestingTopicEFERGCZ"); //"/feeds/onoff");
+Adafruit_MQTT_Subscribe onoffbutton = Adafruit_MQTT_Subscribe(&mqtt, "home/livingroom/onoffbutton");
 
 void setup() {
   Serial.begin(9600);
@@ -87,10 +85,19 @@ void loop() {
   }
 
   // Now we can publish stuff!
-  Serial.print(F("\nSending photocell val "));
+  Serial.print(F("\nSending temperature val "));
   Serial.print(x);
   Serial.print("...");
-  if (! photocell.publish(x++)) {
+  if (! temperature.publish(x++)) {
+    Serial.println(F("Failed"));
+  } else {
+    Serial.println(F("OK!"));
+  }
+
+  Serial.print(F("\nSending humidity val "));
+  Serial.print(x);
+  Serial.print("...");
+  if (! humidity.publish(x++)) {
     Serial.println(F("Failed"));
   } else {
     Serial.println(F("OK!"));
