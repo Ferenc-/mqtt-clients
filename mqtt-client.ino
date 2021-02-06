@@ -1,4 +1,4 @@
-/* Based on 
+/* Based on
  *  https://github.com/adafruit/Adafruit_MQTT_Library/blob/master/examples/mqtt_ethernet/mqtt_ethernet.ino
  */
 
@@ -26,13 +26,14 @@ IPAddress dnsIP (192, 168, 0, 1);
 /* Keep in mind that this is the unencrypted port */
 #define MQTT_SERVERPORT  1883
 
+#define MQTT_CLIENT_ID   "LivingRoomNano"
 #define MQTT_USERNAME    "thermometer001"
 #define MQTT_KEY         "thermometer001pw"
 
 
 EthernetClient client;
 
-Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_USERNAME, MQTT_KEY);
+Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_SERVERPORT, MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_KEY);
 
 // You don't need to change anything below this line!
 #define halt(s) { Serial.println(F( s )); while(1);  }
@@ -56,7 +57,7 @@ void setup() {
   digitalWrite(4,HIGH);
 
   Serial.println("Starting ethernet");
-  
+
   /* Ethernet.begin(mac, iotIP, dnsIP) */
   Ethernet.begin(mac,ip,dnsIP);
 
@@ -107,7 +108,7 @@ void loop() {
   if(! mqtt.ping()) {
     mqtt.disconnect();
   }
-    
+
 }
 
 
